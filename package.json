@@ -1,0 +1,19 @@
+{
+  "name": "express-app",
+  "version": "1.0.0",
+  "description": "this app is being made by ashutosh in order to learn about express",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashusnapx/expressjs.git"
+  },
+  "author": "ashutosh kumar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashusnapx/expressjs/issues"
+  },
+  "homepage": "https://github.com/ashusnapx/expressjs#readme"
+}
