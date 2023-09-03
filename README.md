@@ -4,9 +4,9 @@ This repository tracks my learning journey with Express.js. I will use this READ
 
 ## Basics
 
-- [ ] What is Express.js?
+- [X] What is Express.js?
 - [ ] Setting up an Express Application
-  - [ ] Installing Express
+  - [X] Installing Express
   - [ ] Creating a Basic Server
   - [ ] Hello World Example
 - [ ] Routing
