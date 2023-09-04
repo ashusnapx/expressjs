@@ -1,27 +1,43 @@
 /* 
 Types of middlewares - 
-1. Application-level middleware
+1. Application-level middleware ✅
 2. 3rd party middleware
-3. Router-level middleware
+3. Router-level middleware ✅
 4. Built-in middleware
-5. Error-handling middleware
+5. Error-handling middleware ✅
 */
 
 const express = require( 'express' );
+const path = require( 'path' );
+const logger = require( 'morgan' );
+const multer = require( 'multer' );
 const router = express.Router();
 const app = express();
 const port = 8000;
+const upload = multer( { dest: "./public/uploads" } );
+
+// built in middleware
+app.use( express.json() );
+app.use( express.urlencoded( { extended: true } ) );
+// console.log( path.join( __dirname, "./public" ) );
+const staticPath = path.join( __dirname, "./public" );
+app.use("/static", express.static( staticPath ) );
 
 const loggerMiddleware = (req, res, next) => {
     console.log( `${ new Date() } --- Request [${ req.method }] [${ req.url }]` );
     next();
 }
 app.use( loggerMiddleware );
+
+// 3rd party middleware
+app.use( logger( "dev" ) );
+
+
 app.use( "/api/users", router );
 
 // fake authorisation
 const fakeAuth = ( req, res, next ) => {
-    const authStatus = false;
+    const authStatus = true;
     if ( authStatus ) 
     {
         console.log( `Auth status of user is ${ authStatus }` );
@@ -38,7 +54,8 @@ const fakeAuth = ( req, res, next ) => {
 const getUsers = (req, res) => {
     res.json( { "message": "Getting all the users" } );
 }
-const createUser = (req, res) => {
+const createUser = ( req, res ) => {
+    console.log("This is the request body recieved from client : ", req.body)
     res.json( { "message": "Creating user will id: 0201IT201020" } );
 }
 
@@ -73,6 +90,18 @@ const errorHandler = (err, req, res, next) => {
     
 }
 app.use( errorHandler );
+
+app.all( "*", (req, res, next) => {
+    res.status( 400 );
+    throw new Error( "Route not found" );
+} )
+
+app.post( "/upload", upload.single( "image" ), ( req, res, next ) => {
+    console.log( req.file, req.body );
+    res.send( req.file );
+}, ( err, req, res ) => {
+    res.status(400).send({"err": err.message})
+});
 
 // router level middleware ends
 app.listen( 8000, () => {
